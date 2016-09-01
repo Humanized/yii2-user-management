@@ -26,7 +26,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         if (\Yii::$app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'humanized\usermanagement\commands';
+            $this->controllerNamespace = 'humanized\usermanagement\cli';
         }
         parent::init();
     }
