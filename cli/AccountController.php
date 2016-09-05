@@ -18,7 +18,7 @@ use humanized\usermanagement\common\models\UserCrud;
  * @package yii2-user-management
  * 
  */
-class DefaultController extends \yii\console\Controller
+class AccountController extends \yii\console\Controller
 {
 
     public function actionCreate($email, $username = null)

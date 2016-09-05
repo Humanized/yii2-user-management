@@ -8,6 +8,9 @@
 
 namespace humanized\usermanagement\common\models;
 
+use Yii;
+use yii\base\Model;
+
 /**
  * Generic CRUD Operations for IdentityClass
  */
@@ -30,10 +33,10 @@ class UserCrud extends Model
 
     public static function setup($model, &$attributes)
     {
-        $passwd = $attributes['password'];
-        unset($attributes['password']);
-        $model->setAttributes($attributes);
-        $model->setPassword($passwd);
+
+        $model->username = $attributes['username'];
+        $model->email = $attributes['email'];
+        $model->setPassword($attributes['password']);
         $model->generateAuthKey();
     }
 
