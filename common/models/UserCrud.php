@@ -21,14 +21,23 @@ class UserCrud extends Model
     {
         $userClass = \Yii::$app->user->identityClass;
         $model = new $userClass();
-        if (!isset($attributes['username'])) {
-            $attributes['username'] = uniqid('user_');
+
+        if (!isset($attributes['email'])) {
+            return null;
         }
-        if (!isset($attributes['password'])) {
-            $attributes['password'] = Yii::$app->security->generateRandomString();
+        $test = $userClass::find()->where(['email' => $attributes['email']])->one();
+        if (!isset($test)) {
+            if (!isset($attributes['username'])) {
+                $attributes['username'] = uniqid('user_');
+            }
+            if (!isset($attributes['password'])) {
+                $attributes['password'] = Yii::$app->security->generateRandomString();
+                $attributes['status'] = 0;
+            }
+            self::setup($model, $attributes);
+            return $model->save() ? $model : null;
         }
-        self::setup($model, $attributes);
-        return $model->save() ? $model : null;
+        return null;
     }
 
     public static function setup($model, &$attributes)
