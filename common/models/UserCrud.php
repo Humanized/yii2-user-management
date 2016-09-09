@@ -42,11 +42,16 @@ class UserCrud extends Model
 
     public static function setup($model, &$attributes)
     {
-
+        if (isset($attributes['status'])) {
+            $model->status = $attributes['status'];
+        }
         $model->username = $attributes['username'];
         $model->email = $attributes['email'];
         $model->setPassword($attributes['password']);
         $model->generateAuthKey();
+        if ($model->status == 0) {
+            $model->generatePasswordResetToken();
+        }
     }
 
     public static function readOne($id)
