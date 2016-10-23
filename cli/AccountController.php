@@ -21,12 +21,29 @@ use humanized\usermanagement\common\models\UserCrud;
 class AccountController extends \yii\console\Controller
 {
 
+    public $setPassword = false;
+
+    public function options()
+    {
+        return ['setPassword'];
+    }
+
+    public function optionAliases()
+    {
+        return ['pswd' => 'setPassword'];
+    }
+
     public function actionCreate($email, $username = null)
     {
         $attributes = ['email' => $email];
         if (isset($username)) {
             $attributes['username'] = $username;
         }
+
+        if ($this->setPassword) {
+            $attributes['password'] = 'debug123';
+        }
+
         $success = UserCrud::create($attributes);
         return 0;
     }

@@ -20,13 +20,15 @@ class UserCrud extends Model
     public static function create($attributes)
     {
         $userClass = \Yii::$app->user->identityClass;
-        $model = new $userClass();
+        $user = new $userClass();
 
+        //E-mail is required
         if (!isset($attributes['email'])) {
             return null;
         }
-        $test = $userClass::find()->where(['email' => $attributes['email']])->one();
-        if (!isset($test)) {
+        //Check if e-mail already exists
+        $model = $userClass::find()->where(['email' => $attributes['email']])->one();
+        if (!isset($model)) {
             if (!isset($attributes['username'])) {
                 $attributes['username'] = uniqid('user_');
             }
@@ -34,8 +36,8 @@ class UserCrud extends Model
                 $attributes['password'] = Yii::$app->security->generateRandomString();
                 $attributes['status'] = 0;
             }
-            self::setup($model, $attributes);
-            return $model->save() ? $model : null;
+            self::setup($user, $attributes);
+            return $user->save() ? $user : null;
         }
         return null;
     }
@@ -85,7 +87,7 @@ class UserCrud extends Model
     public static function delete($attributes)
     {
         $userClass = \Yii::$app->user->identityClass;
-        $model = $userClass::findOne($id);
+        $model = $userClass::findOne($attributes['id']);
         if (isset($model)) {
             $model->setAttributes($attributes);
             return $model->delete();
